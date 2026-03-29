@@ -20,13 +20,11 @@ class NewsIngestionAgent:
         start_time = time.time()
         articles = []
         metadata = {"source": "mock", "fallback": False}
-        using_live = False
         
         if use_tavily and os.getenv("TAVILY_API_KEY"):
             try:
                 articles = self._fetch_from_tavily(topic)
                 metadata["source"] = "tavily"
-                using_live = True
             except Exception as e:
                 print(f"Tavily fetch failed: {e}, falling back to mock data")
                 metadata["fallback"] = True
@@ -34,11 +32,7 @@ class NewsIngestionAgent:
         else:
             articles = self._fetch_from_mock(topic)
         
-        # Only deduplicate live articles — mock data is always fresh
-        if using_live:
-            deduplicated = self._deduplicate(articles)
-        else:
-            deduplicated = articles
+        deduplicated = self._deduplicate(articles)
         
         time_ms = int((time.time() - start_time) * 1000)
         metadata.update({
@@ -117,30 +111,39 @@ class NewsIngestionAgent:
             
             if article_id in seen_ids:
                 continue
+            seen_ids.add(article_id)
             
             text_for_embedding = f"{headline} {body[:500]}"
             
             try:
-                results = self.collection.query(
-                    query_texts=[text_for_embedding],
-                    n_results=1
-                )
+                # Check if this exact article ID already exists in the DB
+                existing = self.collection.get(ids=[article_id])
+                if existing and existing.get('ids'):
+                    # Already indexed before — include it, it's not a cross-duplicate
+                    unique_articles.append(article)
+                    continue
                 
-                if results['distances'] and results['distances'][0]:
-                    similarity = 1 - results['distances'][0][0]
-                    if similarity > 0.92:
-                        continue
-            except:
-                pass
-            
-            self.collection.add(
-                documents=[text_for_embedding],
-                metadatas=[{"article_id": article_id, "headline": headline}],
-                ids=[article_id]
-            )
+                # New article — check similarity against other articles
+                count = self.collection.count()
+                if count > 0:
+                    results = self.collection.query(
+                        query_texts=[text_for_embedding],
+                        n_results=1
+                    )
+                    if results['distances'] and results['distances'][0]:
+                        similarity = 1 - results['distances'][0][0]
+                        if similarity > 0.92:
+                            continue
+                
+                self.collection.add(
+                    documents=[text_for_embedding],
+                    metadatas=[{"article_id": article_id, "headline": headline}],
+                    ids=[article_id]
+                )
+            except Exception as e:
+                print(f"ChromaDB error for {article_id}: {e}")
             
             unique_articles.append(article)
-            seen_ids.add(article_id)
         
         return unique_articles
     
