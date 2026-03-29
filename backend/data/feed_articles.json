@@ -1,0 +1,137 @@
+[
+  {
+    "id": "feed_1",
+    "headline": "RBI holds repo rate at 6.5% for eighth consecutive meeting",
+    "body": "The Reserve Bank of India's Monetary Policy Committee decided to keep the repo rate unchanged at 6.5% for the eighth consecutive meeting. Governor Shaktikanta Das stated that the decision aims to balance growth and inflation. Retail inflation stood at 4.8% in January, within the RBI's comfort zone. The central bank maintained its GDP growth forecast at 7.2% for FY26. Das emphasized that the RBI will continue to monitor global economic developments and domestic inflation trends before considering any rate changes. Banking stocks showed mixed reactions to the decision.",
+    "url": "https://economictimes.com/rbi-repo-rate-unchanged",
+    "source": "Economic Times",
+    "publish_time": "2026-02-05T14:00:00Z",
+    "tags": ["rbi", "monetary policy", "repo rate", "inflation"]
+  },
+  {
+    "id": "feed_2",
+    "headline": "How to start SIP with just Rs 500 per month: A beginner's guide",
+    "body": "Systematic Investment Plans (SIPs) have become increasingly popular among young investors looking to build wealth gradually. You can start investing with as little as Rs 500 per month in mutual funds. Financial advisors recommend beginning with diversified equity funds for long-term wealth creation. A Rs 500 monthly SIP in a fund generating 12% annual returns can grow to Rs 1.16 lakh in 10 years. The power of compounding works best when you start early and stay invested for the long term. Most mutual fund platforms now offer zero-commission direct plans, maximizing your returns. Experts suggest increasing your SIP amount by 10% annually as your income grows. It's important to choose funds based on your risk appetite and investment goals.",
+    "url": "https://economictimes.com/sip-guide-500-rupees",
+    "source": "Economic Times",
+    "publish_time": "2026-02-06T10:00:00Z",
+    "tags": ["sip", "mutual funds", "investment", "personal finance"]
+  },
+  {
+    "id": "feed_3",
+    "headline": "India GDP grows 7.6% in Q3 FY26, beats expectations",
+    "body": "India's GDP grew at 7.6% in the October-December quarter of FY26, surpassing market expectations of 7.2%. The strong growth was driven by robust manufacturing output, which expanded at 8.2%, and services sector growth of 7.8%. Government capital expenditure on infrastructure projects provided a significant boost to economic activity. Private consumption showed signs of recovery, growing at 6.5% compared to 5.8% in the previous quarter. Investment demand remained strong with gross fixed capital formation growing at 9.2%. Agriculture sector growth moderated to 2.8% due to uneven monsoon distribution. Economists believe India will maintain its position as the fastest-growing major economy globally. The government's fiscal consolidation efforts combined with strong growth have improved macroeconomic stability.",
+    "url": "https://economictimes.com/india-gdp-q3-fy26",
+    "source": "Economic Times",
+    "publish_time": "2026-02-28T11:00:00Z",
+    "tags": ["gdp", "economic growth", "india economy", "quarterly results"]
+  },
+  {
+    "id": "feed_4",
+    "headline": "FII outflows hit $2.1 billion in January amid global uncertainty",
+    "body": "Foreign Institutional Investors (FIIs) pulled out $2.1 billion from Indian equity markets in January 2026, marking the highest monthly outflow in six months. The selling was primarily driven by concerns over US Federal Reserve's hawkish stance and rising US Treasury yields. FIIs reduced exposure to banking and IT stocks, which saw the maximum outflows. However, domestic institutional investors (DIIs) absorbed the selling pressure, pumping in $2.5 billion during the same period. Market analysts believe the outflows are part of a broader emerging market sell-off rather than India-specific concerns. The Sensex declined 3.2% in January despite strong domestic economic fundamentals. Currency markets saw the rupee depreciate to 83.20 against the dollar. Experts expect FII flows to stabilize once global uncertainty reduces and the US Fed signals a pause in rate hikes.",
+    "url": "https://economictimes.com/fii-outflows-january-2026",
+    "source": "Economic Times",
+    "publish_time": "2026-02-01T16:00:00Z",
+    "tags": ["fii", "foreign investment", "stock market", "capital flows"]
+  },
+  {
+    "id": "feed_5",
+    "headline": "Top 5 tax-saving investment options for FY 2025-26",
+    "body": "With the financial year ending in March, taxpayers are looking for last-minute tax-saving investments under Section 80C. The most popular option remains the Equity Linked Savings Scheme (ELSS), which offers tax deduction up to Rs 1.5 lakh with just a 3-year lock-in period. Public Provident Fund (PPF) continues to be favored by conservative investors, offering 7.1% annual interest with complete tax exemption. National Pension System (NPS) provides an additional Rs 50,000 deduction under Section 80CCD(1B). Tax-saving fixed deposits offered by banks provide guaranteed returns but have a 5-year lock-in. Life insurance premiums also qualify for Section 80C deductions. Financial planners advise choosing investments based on your risk profile rather than just tax benefits. Starting SIPs in ELSS funds early in the financial year helps in rupee cost averaging.",
+    "url": "https://economictimes.com/tax-saving-options-fy26",
+    "source": "Economic Times",
+    "publish_time": "2026-02-15T09:00:00Z",
+    "tags": ["tax saving", "section 80c", "investment", "personal finance"]
+  },
+  {
+    "id": "feed_6",
+    "headline": "Adani Group stocks rally 5% after securing $3 billion renewable energy contract",
+    "body": "Adani Group stocks surged up to 5% after the conglomerate secured a $3 billion contract to develop renewable energy projects in the Middle East. Adani Green Energy will set up 2,500 MW of solar and wind power capacity in Saudi Arabia over the next three years. The contract is the largest international order for the group's renewable energy division. Adani Green shares jumped 6.2%, while Adani Enterprises gained 4.8%. The group's total renewable energy capacity will reach 15,000 MW by 2027. Analysts upgraded their target prices for Adani Green, citing strong order book visibility. The company plans to invest $10 billion in renewable energy by 2030. This contract strengthens India's position in global clean energy markets.",
+    "url": "https://economictimes.com/adani-renewable-energy-contract",
+    "source": "Economic Times",
+    "publish_time": "2026-02-20T13:00:00Z",
+    "tags": ["adani", "renewable energy", "stock market", "contracts"]
+  },
+  {
+    "id": "feed_7",
+    "headline": "Understanding EMI: How home loan interest rates affect your monthly payment",
+    "body": "With home loan interest rates ranging from 8.5% to 9.5%, understanding how EMI calculations work is crucial for homebuyers. For a Rs 50 lakh loan at 9% interest for 20 years, your monthly EMI would be approximately Rs 45,000. Even a 0.5% reduction in interest rate can save you lakhs over the loan tenure. Most banks offer lower rates to salaried employees with good credit scores above 750. Prepaying your home loan can significantly reduce the total interest burden. Financial advisors suggest prepaying during the initial years when the interest component is highest. The new tax regime doesn't allow deductions for home loan interest, so borrowers need to choose between old and new regimes carefully. Balance transfer to banks offering lower rates can also reduce your EMI burden.",
+    "url": "https://economictimes.com/home-loan-emi-guide",
+    "source": "Economic Times",
+    "publish_time": "2026-02-18T10:30:00Z",
+    "tags": ["home loan", "emi", "interest rates", "personal finance"]
+  },
+  {
+    "id": "feed_8",
+    "headline": "Tata Motors shares jump 7% on strong EV sales growth",
+    "body": "Tata Motors shares surged 7% to Rs 985 after the company reported a 45% year-on-year growth in electric vehicle sales for January 2026. The automaker sold 8,500 EVs during the month, capturing 72% of India's passenger EV market. The Nexon EV and Tiago EV models drove the sales growth. Tata Motors plans to launch three new EV models in FY27, including an electric SUV priced under Rs 15 lakh. The company's total vehicle sales grew 18% in January. Analysts believe Tata Motors is well-positioned to benefit from India's EV adoption, which is expected to accelerate with government incentives. The stock has gained 35% over the past six months. Institutional investors have increased their holdings in the company.",
+    "url": "https://economictimes.com/tata-motors-ev-sales-growth",
+    "source": "Economic Times",
+    "publish_time": "2026-02-03T14:30:00Z",
+    "tags": ["tata motors", "electric vehicles", "stock market", "auto sector"]
+  },
+  {
+    "id": "feed_9",
+    "headline": "What is credit score and why it matters for loan approval",
+    "body": "Your credit score is a three-digit number ranging from 300 to 900 that determines your creditworthiness. Banks and financial institutions use this score to decide whether to approve your loan application and at what interest rate. A score above 750 is considered excellent and can help you get loans at the lowest interest rates. Factors affecting your credit score include payment history (35%), credit utilization (30%), length of credit history (15%), types of credit (10%), and recent credit inquiries (10%). Missing EMI payments or credit card bills can significantly damage your score. It takes 6-12 months of disciplined credit behavior to improve a poor score. You can check your credit score for free on platforms like CIBIL, Experian, and CRIF. Maintaining a good credit score can save you lakhs in interest over your lifetime.",
+    "url": "https://economictimes.com/credit-score-guide",
+    "source": "Economic Times",
+    "publish_time": "2026-02-12T11:00:00Z",
+    "tags": ["credit score", "loans", "personal finance", "banking"]
+  },
+  {
+    "id": "feed_10",
+    "headline": "Infosys Q3 results: Net profit rises 12% to Rs 6,800 crore, revenue guidance maintained",
+    "body": "Infosys reported a 12% year-on-year increase in consolidated net profit to Rs 6,800 crore for Q3 FY26. Revenue grew 8.5% to Rs 39,200 crore, driven by strong demand in financial services and retail sectors. The company maintained its FY26 revenue growth guidance at 6-8% in constant currency terms. Digital revenue now accounts for 62% of total revenue, up from 58% a year ago. Infosys added 15 large deals worth $3.2 billion during the quarter. The company's operating margin improved by 50 basis points to 21.2%. CEO Salil Parekh expressed confidence in sustained deal momentum despite global economic uncertainties. Infosys shares rose 3% in early trading following the results announcement. The company announced an interim dividend of Rs 18 per share.",
+    "url": "https://economictimes.com/infosys-q3-results-fy26",
+    "source": "Economic Times",
+    "publish_time": "2026-01-16T18:00:00Z",
+    "tags": ["infosys", "quarterly results", "it sector", "earnings"]
+  },
+  {
+    "id": "feed_11",
+    "headline": "Gold prices surge to Rs 68,000 per 10 grams amid global uncertainty",
+    "body": "Gold prices in India touched a record high of Rs 68,000 per 10 grams as global economic uncertainty drove investors toward safe-haven assets. International gold prices crossed $2,150 per ounce, the highest level in two years. The rally was fueled by expectations of US Federal Reserve rate cuts and geopolitical tensions in the Middle East. Jewelers reported a 20% decline in retail demand due to high prices. However, investment demand through gold ETFs and sovereign gold bonds remained strong. Analysts predict gold could test Rs 70,000 levels if global uncertainties persist. The rupee's depreciation against the dollar also contributed to higher domestic gold prices. Financial advisors suggest limiting gold allocation to 10-15% of your investment portfolio.",
+    "url": "https://economictimes.com/gold-prices-record-high",
+    "source": "Economic Times",
+    "publish_time": "2026-02-22T12:00:00Z",
+    "tags": ["gold", "commodity prices", "investment", "safe haven"]
+  },
+  {
+    "id": "feed_12",
+    "headline": "SEBI introduces new rules for mutual fund expense ratios to benefit investors",
+    "body": "The Securities and Exchange Board of India (SEBI) announced new regulations to reduce mutual fund expense ratios, potentially saving investors thousands of crores annually. The total expense ratio (TER) for equity funds will be capped at 2% for the first Rs 500 crore of assets, down from 2.25%. For debt funds, the cap will be reduced to 1.75% from 2%. The new rules will be implemented from April 1, 2026. SEBI also mandated greater transparency in commission structures paid to distributors. Mutual fund houses will need to disclose all costs in a standardized format. Industry experts believe these changes will make direct plans even more attractive for DIY investors. The move is expected to increase competition among fund houses to offer lower-cost products.",
+    "url": "https://economictimes.com/sebi-mutual-fund-expense-ratio",
+    "source": "Economic Times",
+    "publish_time": "2026-02-10T15:00:00Z",
+    "tags": ["sebi", "mutual funds", "regulations", "expense ratio"]
+  },
+  {
+    "id": "feed_13",
+    "headline": "Reliance Industries Q3 profit jumps 18% to Rs 19,500 crore on strong retail, telecom performance",
+    "body": "Reliance Industries reported an 18% year-on-year increase in consolidated net profit to Rs 19,500 crore for Q3 FY26. Revenue rose 15% to Rs 2.42 lakh crore, driven by strong performance across retail and telecom segments. Reliance Retail added 500 new stores during the quarter, taking the total count to 18,500 stores. Jio added 12 million subscribers, with ARPU increasing to Rs 185. The oil-to-chemicals business showed modest growth amid volatile crude prices. Reliance announced plans to invest Rs 75,000 crore in expanding its retail and digital businesses in FY27. The company's net debt declined by Rs 15,000 crore to Rs 1.25 lakh crore. Chairman Mukesh Ambani outlined ambitious plans for Reliance's new energy business. The stock gained 4% following the results.",
+    "url": "https://economictimes.com/reliance-q3-results-fy26",
+    "source": "Economic Times",
+    "publish_time": "2026-01-20T19:00:00Z",
+    "tags": ["reliance", "quarterly results", "retail", "telecom"]
+  },
+  {
+    "id": "feed_14",
+    "headline": "Understanding PPF: Why Public Provident Fund remains a safe investment option",
+    "body": "Public Provident Fund (PPF) continues to be one of the safest long-term investment options in India, offering guaranteed returns backed by the government. The current interest rate is 7.1% per annum, compounded annually. You can invest a minimum of Rs 500 and maximum of Rs 1.5 lakh per year. The entire investment qualifies for tax deduction under Section 80C, and the maturity amount is completely tax-free. PPF has a 15-year lock-in period, but partial withdrawals are allowed from the 7th year. The scheme is ideal for risk-averse investors looking for stable returns. Unlike market-linked investments, PPF returns are not affected by stock market volatility. You can open a PPF account at any post office or authorized bank branch. Financial planners recommend PPF as a core component of retirement planning.",
+    "url": "https://economictimes.com/ppf-investment-guide",
+    "source": "Economic Times",
+    "publish_time": "2026-02-25T10:00:00Z",
+    "tags": ["ppf", "investment", "tax saving", "personal finance"]
+  },
+  {
+    "id": "feed_15",
+    "headline": "Startup funding in India crosses $12 billion in 2025, fintech leads the pack",
+    "body": "Indian startups raised $12.3 billion in funding during 2025, marking a 25% increase from the previous year. Fintech startups attracted the highest funding at $3.8 billion across 180 deals. E-commerce and quick commerce companies raised $2.5 billion, while SaaS startups secured $2.1 billion. The number of unicorns in India reached 115, with 12 new additions in 2025. Bengaluru remained the startup capital, accounting for 42% of total funding, followed by Delhi-NCR at 28% and Mumbai at 18%. Late-stage funding (Series C and beyond) dominated, representing 55% of total capital deployed. Investors showed increased interest in profitable startups with clear path to IPO. The government's Startup India initiative and regulatory support have created a favorable ecosystem. Experts predict 2026 will see even higher funding as global investors remain bullish on India's digital economy.",
+    "url": "https://economictimes.com/startup-funding-india-2025",
+    "source": "Economic Times",
+    "publish_time": "2026-01-05T14:00:00Z",
+    "tags": ["startups", "funding", "venture capital", "fintech"]
+  }
+]
