@@ -20,11 +20,13 @@ class NewsIngestionAgent:
         start_time = time.time()
         articles = []
         metadata = {"source": "mock", "fallback": False}
+        using_live = False
         
         if use_tavily and os.getenv("TAVILY_API_KEY"):
             try:
                 articles = self._fetch_from_tavily(topic)
                 metadata["source"] = "tavily"
+                using_live = True
             except Exception as e:
                 print(f"Tavily fetch failed: {e}, falling back to mock data")
                 metadata["fallback"] = True
@@ -32,7 +34,11 @@ class NewsIngestionAgent:
         else:
             articles = self._fetch_from_mock(topic)
         
-        deduplicated = self._deduplicate(articles)
+        # Only deduplicate live articles — mock data is always fresh
+        if using_live:
+            deduplicated = self._deduplicate(articles)
+        else:
+            deduplicated = articles
         
         time_ms = int((time.time() - start_time) * 1000)
         metadata.update({
