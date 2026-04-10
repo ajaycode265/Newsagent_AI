@@ -6,6 +6,9 @@ from gtts import gTTS
 from PIL import Image, ImageDraw, ImageFont
 import json
 
+VIDEOS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "videos")
+os.makedirs(VIDEOS_DIR, exist_ok=True)
+
 class VernacularVideoAgent:
     def create_video(self, article: Dict[str, Any], session_id: str) -> tuple[Dict[str, Any], List[Dict[str, Any]]]:
         trace_steps = []
@@ -117,8 +120,7 @@ Provide ONLY the Hindi translation in Devanagari:"""
     def _generate_audio(self, script_hi: str, session_id: str) -> tuple[str, Dict[str, Any]]:
         start_time = time.time()
         
-        os.makedirs("backend/videos", exist_ok=True)
-        audio_path = f"backend/videos/{session_id}_audio.mp3"
+        audio_path = os.path.join(VIDEOS_DIR, f"{session_id}_audio.mp3")
         
         try:
             tts = gTTS(text=script_hi, lang='hi', slow=False)
@@ -230,7 +232,7 @@ Provide ONLY the Hindi translation in Devanagari:"""
 
     def _assemble_video(self, headline: str, script_hi: str, subtitles: List[Dict], audio_path: str, session_id: str) -> tuple[str, Dict[str, Any]]:
         start_time = time.time()
-        video_path = f"backend/videos/{session_id}_video.mp4"
+        video_path = os.path.join(VIDEOS_DIR, f"{session_id}_video.mp4")
         temp_files = []
 
         try:
@@ -250,7 +252,7 @@ Provide ONLY the Hindi translation in Devanagari:"""
 
             for idx, sub in enumerate(subtitles):
                 img = self._make_frame(headline, sub['text'], font_lg, font_md, font_hi)
-                frame_path = f"backend/videos/{session_id}_f{idx}.png"
+                frame_path = os.path.join(VIDEOS_DIR, f"{session_id}_f{idx}.png")
                 img.save(frame_path)
                 temp_files.append(frame_path)
                 clip_dur = max(0.5, sub['end'] - sub['start'])

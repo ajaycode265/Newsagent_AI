@@ -15,6 +15,10 @@ from models.state import create_initial_state
 from orchestrator import OrchestratorAgent
 from agents import DeepBriefingAgent
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+VIDEOS_DIR = os.path.join(BASE_DIR, "videos")
+os.makedirs(VIDEOS_DIR, exist_ok=True)
+
 app = FastAPI(title="MyET AI - News Agent API")
 
 app.add_middleware(
@@ -195,8 +199,7 @@ async def get_video_status(job_id: str):
 
 @app.get("/api/video/download/{job_id}")
 async def download_video(job_id: str):
-    video_path = f"backend/videos/{job_id}_video.mp4"
-    
+    video_path = os.path.join(VIDEOS_DIR, f"{job_id}_video.mp4")
     if os.path.exists(video_path):
         return FileResponse(video_path, media_type="video/mp4", filename=f"{job_id}.mp4")
     else:
@@ -240,7 +243,7 @@ async def generate_audio_summary(req: VideoRequest):
 
 @app.get("/api/audio/download/{job_id}")
 async def download_audio(job_id: str):
-    audio_path = f"backend/videos/{job_id}_audio.mp3"
+    audio_path = os.path.join(VIDEOS_DIR, f"{job_id}_audio.mp3")
     if os.path.exists(audio_path):
         return FileResponse(audio_path, media_type="audio/mpeg", filename=f"{job_id}.mp3")
     else:
