@@ -182,7 +182,7 @@ async def generate_video(req: VideoRequest):
 
 @app.get("/api/video/status/{job_id}")
 async def get_video_status(job_id: str):
-    video_path = f"backend/videos/{job_id}_video.mp4"
+    video_path = os.path.join(VIDEOS_DIR, f"{job_id}_video.mp4")
     
     if os.path.exists(video_path):
         return {
