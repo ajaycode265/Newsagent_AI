@@ -5,16 +5,19 @@ import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { ArrowLeft, Loader2, Send, ChevronDown, ChevronUp, FileText, MessageCircle, Search, X } from 'lucide-react'
 import Link from 'next/link'
+import NewsTicker from '../components/NewsTicker'
 
 const BRIEFING_TOPICS = [
-  { label: 'Union Budget 2026', query: 'union budget 2026 India' },
-  { label: 'RBI Rate Decision', query: 'RBI interest rate India 2025' },
-  { label: 'Nifty & Sensex', query: 'Nifty Sensex stock market India' },
-  { label: 'India GDP', query: 'India GDP economic growth 2025' },
-  { label: 'Startup Funding', query: 'India startup funding investment 2025' },
-  { label: 'India Inflation', query: 'India inflation CPI 2025' },
-  { label: 'SEBI Rules', query: 'SEBI regulations stock market India' },
-  { label: 'Adani Group', query: 'Adani Group business news India' },
+  { label: 'Union Budget 2026', query: 'union budget 2026 India tax economy' },
+  { label: 'RBI Rate Decision', query: 'RBI repo rate cut monetary policy India 2025' },
+  { label: 'Nifty & Sensex', query: 'Nifty Sensex stock market rally India today' },
+  { label: 'India Economy', query: 'India economy GDP inflation growth 2025' },
+  { label: 'Startup Funding', query: 'India startup funding unicorn investment 2025' },
+  { label: 'India Inflation', query: 'India inflation CPI WPI RBI 2025' },
+  { label: 'SEBI & Markets', query: 'SEBI regulation stock market India investor 2025' },
+  { label: 'Banking Sector', query: 'India banking HDFC SBI ICICI loan NPA 2025' },
+  { label: 'IT & Tech', query: 'India IT technology Infosys TCS Wipro 2025' },
+  { label: 'Adani Group', query: 'Adani Group ports airports energy business 2025' },
 ]
 
 export default function BriefingPage() {
@@ -103,9 +106,20 @@ export default function BriefingPage() {
 
   return (
     <main className="min-h-screen bg-white pb-32">
+
+      {/* Ticker */}
+      <NewsTicker />
+
       {/* Header */}
-      <div className="bg-white border-b border-[var(--border)] sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
+      <div className="relative sticky top-0 z-10 border-b border-[var(--border)] overflow-hidden">
+        {/* Newspaper grid background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 via-white to-slate-50/70" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+          backgroundSize: '72px 72px'
+        }} />
+        <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-red-400 opacity-[0.05] blur-3xl pointer-events-none" />
+        <div className="relative container mx-auto px-4 py-4">
           <Link href="/" className="inline-flex items-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-3 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home

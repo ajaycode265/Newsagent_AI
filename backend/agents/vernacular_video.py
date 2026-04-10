@@ -10,8 +10,8 @@ class VernacularVideoAgent:
     def create_video(self, article: Dict[str, Any], session_id: str) -> tuple[Dict[str, Any], List[Dict[str, Any]]]:
         trace_steps = []
         video_data = {
-            "script_en": "",
-            "script_hi": "",
+            "hinglish_script": "",
+            "hindi_script": "",
             "audio_path": "",
             "video_path": "",
             "status": "pending"
@@ -21,11 +21,11 @@ class VernacularVideoAgent:
         
         script_en, step1 = self._simplify_to_hinglish(article)
         trace_steps.append(step1)
-        video_data['script_en'] = script_en
+        video_data['hinglish_script'] = script_en
         
         script_hi, step2 = self._translate_to_hindi(script_en)
         trace_steps.append(step2)
-        video_data['script_hi'] = script_hi
+        video_data['hindi_script'] = script_hi
         
         audio_path, step3 = self._generate_audio(script_hi, session_id)
         trace_steps.append(step3)
@@ -173,66 +173,112 @@ Provide ONLY the Hindi translation in Devanagari:"""
             "metadata": {"subtitle_count": len(subtitles)}
         }
     
+    def _get_fonts(self):
+        en_paths = [
+            "C:/Windows/Fonts/arial.ttf",
+            "C:/Windows/Fonts/calibri.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            "arial.ttf",
+        ]
+        hi_paths = [
+            "C:/Windows/Fonts/mangal.ttf",
+            "C:/Windows/Fonts/aparaj.ttf",
+            "/usr/share/fonts/truetype/noto/NotoSansDevanagari-Regular.ttf",
+        ]
+        font_lg, font_md = None, None
+        for p in en_paths:
+            try:
+                font_lg = ImageFont.truetype(p, 44)
+                font_md = ImageFont.truetype(p, 28)
+                break
+            except:
+                pass
+        if not font_lg:
+            font_lg = ImageFont.load_default()
+            font_md = ImageFont.load_default()
+
+        font_hi = None
+        for p in hi_paths:
+            try:
+                font_hi = ImageFont.truetype(p, 32)
+                break
+            except:
+                pass
+        if not font_hi:
+            font_hi = font_md
+        return font_lg, font_md, font_hi
+
+    def _make_frame(self, headline: str, subtitle: str, font_lg, font_md, font_hi) -> Image.Image:
+        img = Image.new('RGB', (1280, 720), color='#001432')
+        draw = ImageDraw.Draw(img)
+        draw.rectangle([(50, 45), (320, 100)], fill='#dc143c')
+        draw.text((185, 72), "BREAKING NEWS", fill='white', anchor="mm", font=font_md)
+        draw.text((1230, 72), "NewsAgent AI", fill='#8899aa', anchor="rm", font=font_md)
+        draw.rectangle([(50, 115), (1230, 118)], fill='#dc143c')
+        lines = self._wrap_text(headline, 52).split('\n')
+        y = 230
+        for line in lines:
+            draw.text((640, y), line, fill='white', anchor="mm", font=font_lg)
+            y += 58
+        if subtitle:
+            draw.rectangle([(40, 598), (1240, 698)], fill='#000000')
+            try:
+                draw.text((640, 648), subtitle[:80], fill='#ffe066', anchor="mm", font=font_hi)
+            except Exception:
+                draw.text((640, 648), subtitle[:80], fill='#ffe066', anchor="mm", font=font_md)
+        return img
+
     def _assemble_video(self, headline: str, script_hi: str, subtitles: List[Dict], audio_path: str, session_id: str) -> tuple[str, Dict[str, Any]]:
         start_time = time.time()
-        
         video_path = f"backend/videos/{session_id}_video.mp4"
-        
+        temp_files = []
+
         try:
-            from moviepy.editor import AudioFileClip, ImageClip, TextClip, CompositeVideoClip
-            
+            from moviepy.editor import AudioFileClip, ImageClip, concatenate_videoclips
+
             if not os.path.exists(audio_path):
                 raise Exception("Audio file not found")
-            
+
             audio = AudioFileClip(audio_path)
             duration = audio.duration
-            
-            img = Image.new('RGB', (1280, 720), color='#001f3f')
-            draw = ImageDraw.Draw(img)
-            
-            try:
-                font_headline = ImageFont.truetype("arial.ttf", 48)
-                font_badge = ImageFont.truetype("arial.ttf", 32)
-            except:
-                font_headline = ImageFont.load_default()
-                font_badge = ImageFont.load_default()
-            
-            draw.rectangle([(50, 50), (350, 120)], fill='#dc143c')
-            draw.text((200, 85), "BREAKING", fill='white', anchor="mm", font=font_badge)
-            
-            headline_wrapped = self._wrap_text(headline, 50)
-            draw.text((640, 300), headline_wrapped, fill='white', anchor="mm", font=font_headline)
-            
-            bg_path = f"backend/videos/{session_id}_bg.png"
-            img.save(bg_path)
-            
-            background = ImageClip(bg_path).set_duration(duration)
-            
-            subtitle_clips = []
-            for sub in subtitles:
-                txt_clip = TextClip(
-                    sub['text'],
-                    fontsize=36,
-                    color='white',
-                    bg_color='black',
-                    size=(1200, None),
-                    method='caption'
-                ).set_position(('center', 550)).set_start(sub['start']).set_duration(sub['end'] - sub['start'])
-                subtitle_clips.append(txt_clip)
-            
-            video = CompositeVideoClip([background] + subtitle_clips).set_audio(audio)
-            
-            video.write_videofile(video_path, fps=24, codec='libx264', audio_codec='aac', verbose=False, logger=None)
-            
-            video.close()
+
+            if not subtitles:
+                subtitles = [{"text": script_hi[:80], "start": 0, "end": duration}]
+
+            font_lg, font_md, font_hi = self._get_fonts()
+            clips = []
+
+            for idx, sub in enumerate(subtitles):
+                img = self._make_frame(headline, sub['text'], font_lg, font_md, font_hi)
+                frame_path = f"backend/videos/{session_id}_f{idx}.png"
+                img.save(frame_path)
+                temp_files.append(frame_path)
+                clip_dur = max(0.5, sub['end'] - sub['start'])
+                clips.append(ImageClip(frame_path).set_duration(clip_dur))
+
+            final = concatenate_videoclips(clips, method="compose")
+            if final.duration > duration:
+                final = final.subclip(0, duration)
+            final = final.set_audio(audio)
+            final.write_videofile(
+                video_path, fps=24, codec='libx264', audio_codec='aac',
+                verbose=False, logger=None
+            )
+            final.close()
             audio.close()
-            
+
         except Exception as e:
             print(f"Video assembly failed: {e}")
+            import traceback; traceback.print_exc()
             video_path = ""
-        
+        finally:
+            for f in temp_files:
+                try:
+                    os.remove(f)
+                except:
+                    pass
+
         time_ms = int((time.time() - start_time) * 1000)
-        
         return video_path, {
             "step": "Assemble MP4 Video",
             "agent": "VernacularVideoAgent",

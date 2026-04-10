@@ -52,9 +52,9 @@ class NewsIngestionAgent:
         
         payload = {
             "api_key": api_key,
-            "query": f"{topic} India business news",
+            "query": topic,
             "search_depth": "advanced",
-            "max_results": 15
+            "max_results": 20
         }
         
         response = requests.post(url, json=payload, timeout=10)
@@ -64,12 +64,18 @@ class NewsIngestionAgent:
         
         articles = []
         for idx, result in enumerate(results):
+            url = result.get("url", "")
+            try:
+                from urllib.parse import urlparse
+                domain = urlparse(url).netloc.replace("www.", "")
+            except Exception:
+                domain = "Unknown"
             articles.append({
-                "id": f"tavily_{hashlib.md5(result['url'].encode()).hexdigest()[:8]}",
+                "id": f"tavily_{hashlib.md5(url.encode()).hexdigest()[:8]}",
                 "headline": result.get("title", ""),
                 "body": result.get("content", ""),
-                "url": result.get("url", ""),
-                "source": result.get("source", "Unknown"),
+                "url": url,
+                "source": domain or "Unknown",
                 "publish_time": result.get("published_date", ""),
                 "tags": []
             })

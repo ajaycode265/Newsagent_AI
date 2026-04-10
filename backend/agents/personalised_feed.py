@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 from llm.router import llm
 
 class PersonalisedFeedAgent:
-    def create_personalised_feed(self, articles: List[Dict[str, Any]], persona: str, top_n: int = 12) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    def create_personalised_feed(self, articles: List[Dict[str, Any]], persona: str, top_n: int = 15) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
         start_time = time.time()
         
         for article in articles:

@@ -100,7 +100,7 @@ NewsAgent AI takes a raw news topic and runs it through a fully autonomous multi
 | **Frontend** | Next.js 14 (App Router), TypeScript, Tailwind CSS, Lucide React |
 | **Backend** | Python 3.9+, FastAPI, Uvicorn |
 | **Orchestration** | Custom ReAct loop (`orchestrator/react_loop.py`) |
-| **LLM Routing** | LiteLLM (multi-provider: Groq / OpenAI / Gemini) |
+| **LLM Routing** | LiteLLM (Groq via `litellm`) |
 | **Active LLMs** | `groq/llama-3.3-70b-versatile`, `groq/llama-3.1-8b-instant` |
 | **Vector DB** | ChromaDB (cosine similarity for dedup + semantic Q&A) |
 | **TTS** | gTTS (Google Text-to-Speech, Hindi) |
@@ -126,10 +126,11 @@ Landing page with demo entry points. Links to all three demo flows.
 - **Q&A interface** at the bottom — ask any question, get an answer with source section attribution powered by ChromaDB semantic search
 
 ### 🎥 Hindi Video (`/video?topic=bankruptcy`)
-- 5-step pipeline: Hinglish simplification → Hindi translation → TTS audio → subtitle timing → MP4 assembly
-- Displays Hinglish script and Hindi Devanagari script side-by-side
-- Shows pipeline trace with timing for each step
-- PASS/FAIL based on 60s completion threshold
+- 8 quick-pick topics + custom topic search bar
+- **Two generation modes:**
+  - **Generate Hindi Video** — full 6-step pipeline (Hinglish → Hindi → TTS → subtitles → MP4). Animated progress bar shows phase name + percentage (10%→100%). Video player appears in the right column on completion.
+  - **🎧 Audio Summary** (faster, ~15s) — fetches news, generates Hinglish + Hindi scripts, produces MP3 via gTTS. Audio player autoplays with both scripts displayed.
+- Progress bars turn green at 100% for both modes
 
 ### 🔍 Agent Trace (`/trace`)
 - Complete audit trail of all 7 agent steps
@@ -221,6 +222,7 @@ This project uses **Groq Free Tier** which enforces token-per-minute limits. Som
 | Deep Briefing Generation | ✅ Works | 7 synthesis calls — may take 15–30s |
 | Briefing Q&A | ✅ Works | Single LLM call, fast |
 | Hindi Video — Scripts | ✅ Works | 2 LLM calls (Hinglish + Hindi translation) |
+| Hindi Video — Audio Summary | ✅ Works | Fast path — no video assembly needed (~15s) |
 | Hindi Video — MP4 Assembly | ⚠️ Requires Setup | Needs `ffmpeg` + `moviepy` installed locally |
 | Live News (Tavily) | ⚠️ Optional | Falls back to mock data if `TAVILY_API_KEY` not set |
 
@@ -234,7 +236,7 @@ This project uses **Groq Free Tier** which enforces token-per-minute limits. Som
 # Backend
 cd backend
 pip install -r requirements.txt
-# Add GROQ_API_KEY to .env (see SETUP.md)
+# Add GROQ_API_KEY and TAVILY_API_KEY to .env (see SETUP.md)
 uvicorn main:app --reload --port 8000
 
 # Frontend (new terminal)

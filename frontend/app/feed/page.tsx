@@ -5,16 +5,19 @@ import axios from 'axios'
 import { ArrowLeft, Users, Loader2, Search, Radio, X } from 'lucide-react'
 import Link from 'next/link'
 import ArticleCard, { ArticleCardSkeleton } from '../components/ArticleCard'
+import NewsTicker from '../components/NewsTicker'
 
 const TRENDING_TOPICS = [
-  { label: 'Union Budget 2026', query: 'union budget 2026 India' },
-  { label: 'RBI Rate Decision', query: 'RBI interest rate India 2025' },
-  { label: 'Nifty & Sensex', query: 'Nifty Sensex stock market India' },
-  { label: 'India GDP', query: 'India GDP economic growth 2025' },
-  { label: 'Startup Funding', query: 'India startup funding investment 2025' },
-  { label: 'SEBI Rules', query: 'SEBI regulations stock market India' },
-  { label: 'India Inflation', query: 'India inflation CPI 2025' },
-  { label: 'Adani Group', query: 'Adani Group business news India' },
+  { label: 'Top Business News', query: 'India top business financial news today 2025' },
+  { label: 'Union Budget 2026', query: 'union budget 2026 India tax economy' },
+  { label: 'RBI Rate Decision', query: 'RBI repo rate cut monetary policy India 2025' },
+  { label: 'Nifty & Sensex', query: 'Nifty Sensex stock market rally India today' },
+  { label: 'India Economy', query: 'India economy GDP inflation growth 2025' },
+  { label: 'Startup Funding', query: 'India startup funding unicorn investment 2025' },
+  { label: 'SEBI & Markets', query: 'SEBI regulation stock market India investor 2025' },
+  { label: 'Adani Group', query: 'Adani Group ports airports energy business 2025' },
+  { label: 'IT & Tech', query: 'India IT technology Infosys TCS Wipro 2025' },
+  { label: 'Banking Sector', query: 'India banking HDFC SBI ICICI loan NPA 2025' },
 ]
 
 export default function FeedPage() {
@@ -24,9 +27,9 @@ export default function FeedPage() {
   const [investorFeed, setInvestorFeed] = useState<any[]>([])
   const [clickCount, setClickCount] = useState(0)
   const [showToast, setShowToast] = useState(false)
-  const [topic, setTopic] = useState('union budget 2026 India')
-  const [inputValue, setInputValue] = useState('union budget 2026 India')
-  const [activeTopic, setActiveTopic] = useState('Union Budget 2026')
+  const [topic, setTopic] = useState('India top business financial news today 2025')
+  const [inputValue, setInputValue] = useState('India top business financial news today 2025')
+  const [activeTopic, setActiveTopic] = useState('Top Business News')
   const [articleCount, setArticleCount] = useState(0)
   const [isLive, setIsLive] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -84,28 +87,39 @@ export default function FeedPage() {
 
   return (
     <main className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)]">
-      <div className="container mx-auto px-4 py-8">
 
-        {/* Header */}
-        <div className="mb-6">
+      {/* Ticker */}
+      <NewsTicker />
+
+      {/* Page Header with newspaper background */}
+      <div className="relative overflow-hidden border-b border-[var(--border)] mb-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 via-white to-slate-50/70" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
+          backgroundSize: '72px 72px'
+        }} />
+        <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-red-400 opacity-[0.05] blur-3xl pointer-events-none" />
+
+        <div className="relative container mx-auto px-4 py-6">
           <Link href="/" className="inline-flex items-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
           <div className="flex items-center gap-3 mb-1">
-            <Users className="w-8 h-8 text-[var(--accent-red)]" />
-            <h1 className="headline-xl">Persona Comparison: <span className="text-[var(--accent-red)]">Live Feed</span></h1>
+            <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-[var(--border)] flex items-center justify-center">
+              <Users className="w-5 h-5 text-[var(--primary)]" />
+            </div>
+            <h1 className="headline-xl">Persona Comparison: <span className="gradient-text">Live Feed</span></h1>
             {isLive && !loading && (
               <span className="inline-flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold px-2.5 py-1 rounded-full">
                 <Radio className="w-3 h-3 animate-pulse" /> LIVE
               </span>
             )}
           </div>
-          <p className="text-[var(--text-secondary)]">Search any topic — same news, different perspectives for CFO vs First-Gen Investor</p>
-        </div>
+          <p className="text-[var(--text-secondary)] mb-5">Search any topic — same news, different perspectives for CFO vs First-Gen Investor</p>
 
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="mb-4">
+          {/* Search Bar */}
+          <form onSubmit={handleSearch} className="mb-4">
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
@@ -134,23 +148,27 @@ export default function FeedPage() {
           </div>
         </form>
 
-        {/* Trending Topics */}
-        <div className="mb-6 flex flex-wrap gap-2">
-          <span className="text-xs text-[var(--text-muted)] font-medium self-center mr-1">Trending:</span>
-          {TRENDING_TOPICS.map(t => (
-            <button
-              key={t.label}
-              onClick={() => handleTrendingClick(t)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                activeTopic === t.label
-                  ? 'bg-[var(--accent-red)] text-white border-[var(--accent-red)]'
-                  : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-red)] hover:text-[var(--accent-red)]'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+          {/* Trending Topics */}
+          <div className="flex flex-wrap gap-2">
+            <span className="text-xs text-[var(--text-muted)] font-medium self-center mr-1">Trending:</span>
+            {TRENDING_TOPICS.map(t => (
+              <button
+                key={t.label}
+                onClick={() => handleTrendingClick(t)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                  activeTopic === t.label
+                    ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
+                    : 'bg-white border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)]'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>{/* /container */}
+      </div>{/* /newspaper bg header */}
+
+      <div className="container mx-auto px-4 py-6">
 
         {/* Loading State */}
         {loading && (

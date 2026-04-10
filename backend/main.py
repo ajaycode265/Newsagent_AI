@@ -202,6 +202,50 @@ async def download_video(job_id: str):
     else:
         raise HTTPException(status_code=404, detail="Video not found")
 
+@app.post("/api/audio/generate")
+async def generate_audio_summary(req: VideoRequest):
+    from agents import NewsIngestionAgent, VernacularVideoAgent
+    import time
+    try:
+        session_id = str(uuid.uuid4())
+        agent = VernacularVideoAgent()
+
+        ingestion = NewsIngestionAgent()
+        articles, _ = ingestion.fetch_articles(req.topic, use_tavily=True)
+        if not articles:
+            raise HTTPException(status_code=404, detail="No articles found for topic")
+
+        article = articles[0]
+
+        script_en, step1 = agent._simplify_to_hinglish(article)
+        script_hi, step2 = agent._translate_to_hindi(script_en)
+        audio_path, step3 = agent._generate_audio(script_hi, session_id)
+
+        if not audio_path or not os.path.exists(audio_path):
+            raise HTTPException(status_code=500, detail="Audio generation failed")
+
+        return {
+            "success": True,
+            "job_id": session_id,
+            "hinglish_script": script_en,
+            "hindi_script": script_hi,
+            "headline": article.get("headline", ""),
+            "source": article.get("source", ""),
+            "trace": [step1, step2, step3]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/audio/download/{job_id}")
+async def download_audio(job_id: str):
+    audio_path = f"backend/videos/{job_id}_audio.mp3"
+    if os.path.exists(audio_path):
+        return FileResponse(audio_path, media_type="audio/mpeg", filename=f"{job_id}.mp3")
+    else:
+        raise HTTPException(status_code=404, detail="Audio not found")
+
 @app.get("/api/trace/{session_id}")
 async def get_trace(session_id: str):
     return {
