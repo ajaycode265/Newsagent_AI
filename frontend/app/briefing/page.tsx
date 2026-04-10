@@ -3,13 +3,26 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
-import { ArrowLeft, Loader2, Send, ChevronDown, ChevronUp, FileText, MessageCircle } from 'lucide-react'
+import { ArrowLeft, Loader2, Send, ChevronDown, ChevronUp, FileText, MessageCircle, Search, X } from 'lucide-react'
 import Link from 'next/link'
+
+const BRIEFING_TOPICS = [
+  { label: 'Union Budget 2026', query: 'union budget 2026 India' },
+  { label: 'RBI Rate Decision', query: 'RBI interest rate India 2025' },
+  { label: 'Nifty & Sensex', query: 'Nifty Sensex stock market India' },
+  { label: 'India GDP', query: 'India GDP economic growth 2025' },
+  { label: 'Startup Funding', query: 'India startup funding investment 2025' },
+  { label: 'India Inflation', query: 'India inflation CPI 2025' },
+  { label: 'SEBI Rules', query: 'SEBI regulations stock market India' },
+  { label: 'Adani Group', query: 'Adani Group business news India' },
+]
 
 export default function BriefingPage() {
   const searchParams = useSearchParams()
-  const topic = searchParams.get('topic') || 'union budget 2026'
-  
+  const initialTopic = searchParams.get('topic') || 'union budget 2026'
+
+  const [activeTopic, setActiveTopic] = useState(initialTopic)
+  const [inputValue, setInputValue] = useState(initialTopic)
   const [loading, setLoading] = useState(true)
   const [briefing, setBriefing] = useState<any>(null)
   const [sessionId, setSessionId] = useState('')
@@ -19,13 +32,15 @@ export default function BriefingPage() {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    loadBriefing()
-  }, [topic])
+    loadBriefing(activeTopic)
+  }, [activeTopic])
 
-  const loadBriefing = async () => {
+  const loadBriefing = async (t: string) => {
     setLoading(true)
+    setBriefing(null)
+    setAnswer(null)
     try {
-      const res = await axios.post('/api/briefing/generate', { topic })
+      const res = await axios.post('/api/briefing/generate', { topic: t })
       setBriefing(res.data.briefing)
       setSessionId(res.data.session_id)
       setExpandedSections(new Set(Object.keys(res.data.briefing.sections || {})))
@@ -34,6 +49,16 @@ export default function BriefingPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (inputValue.trim()) setActiveTopic(inputValue.trim())
+  }
+
+  const handleTrendingClick = (t: { label: string; query: string }) => {
+    setInputValue(t.query)
+    setActiveTopic(t.query)
   }
 
   const askQuestion = async () => {
@@ -65,11 +90,10 @@ export default function BriefingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin mx-auto mb-4" />
-          <p className="text-[var(--text-secondary)]">Generating briefing...</p>
-        </div>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4">
+        <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin" />
+        <p className="text-[var(--text-secondary)]">Fetching live news for <strong>"{activeTopic}"</strong>...</p>
+        <p className="text-[var(--text-muted)] text-sm">Processing · Synthesizing · Building briefing</p>
       </div>
     )
   }
@@ -86,14 +110,55 @@ export default function BriefingPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
-          
+
+          {/* Topic Search */}
+          <form onSubmit={handleSearch} className="mb-3">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={e => setInputValue(e.target.value)}
+                  placeholder="Enter any business topic for a live briefing..."
+                  className="w-full pl-9 pr-9 py-2.5 border border-[var(--border)] rounded-lg text-sm focus:outline-none focus:border-[var(--primary)] transition-colors"
+                />
+                {inputValue && (
+                  <button type="button" onClick={() => setInputValue('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+              <button type="submit" className="px-4 py-2.5 bg-[var(--primary)] text-white rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-1.5">
+                <Search className="w-3.5 h-3.5" /> Generate
+              </button>
+            </div>
+          </form>
+
+          {/* Trending Chips */}
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {BRIEFING_TOPICS.map(t => (
+              <button
+                key={t.label}
+                onClick={() => handleTrendingClick(t)}
+                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
+                  activeTopic === t.query
+                    ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
+                    : 'border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)]'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="headline-xl mb-2">
-                Deep Briefing: <span className="gradient-text">{topic}</span>
+              <h1 className="headline-xl mb-1">
+                Deep Briefing: <span className="gradient-text">{activeTopic}</span>
               </h1>
               <p className="body text-[var(--text-secondary)]">
-                Synthesized from {sectionKeys.length} articles into {sectionKeys.length} non-overlapping sections
+                {sectionKeys.length} sections synthesized from live news
               </p>
             </div>
             <div className="badge badge-primary">

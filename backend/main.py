@@ -86,7 +86,7 @@ async def get_feed(req: FeedRequest):
     
     try:
         ingestion = NewsIngestionAgent()
-        articles, _ = ingestion.fetch_articles(req.topic, use_tavily=False)
+        articles, ingest_meta = ingestion.fetch_articles(req.topic, use_tavily=True)
         normalized = ingestion.normalize_articles(articles)
         
         processing = ProcessingAgent()
@@ -97,6 +97,8 @@ async def get_feed(req: FeedRequest):
         
         feed_agent = PersonalisedFeedAgent()
         feed, metadata = feed_agent.create_personalised_feed(scored, req.persona)
+        metadata["source"] = ingest_meta.get("source", "mock")
+        metadata["original_count"] = ingest_meta.get("original_count", 0)
         
         return {
             "success": True,
@@ -115,7 +117,7 @@ async def generate_briefing(req: BriefingRequest):
         session_id = str(uuid.uuid4())
         
         ingestion = NewsIngestionAgent()
-        articles, _ = ingestion.fetch_articles(req.topic, use_tavily=False)
+        articles, _ = ingestion.fetch_articles(req.topic, use_tavily=True)
         normalized = ingestion.normalize_articles(articles)
         
         processing = ProcessingAgent()
@@ -155,7 +157,7 @@ async def generate_video(req: VideoRequest):
         session_id = str(uuid.uuid4())
         
         ingestion = NewsIngestionAgent()
-        articles, _ = ingestion.fetch_articles(req.topic, use_tavily=False)
+        articles, _ = ingestion.fetch_articles(req.topic, use_tavily=True)
         
         if not articles:
             raise HTTPException(status_code=404, detail="No articles found")
@@ -207,6 +209,27 @@ async def get_trace(session_id: str):
         "steps": [],
         "token_usage": {},
         "total_time_ms": 0
+    }
+
+@app.get("/api/health")
+async def health():
+    return {"status": "ok", "tavily": bool(os.getenv("TAVILY_API_KEY")), "groq": bool(os.getenv("GROQ_API_KEY"))}
+
+@app.get("/api/trending")
+async def get_trending():
+    return {
+        "topics": [
+            {"label": "Union Budget 2026", "query": "union budget 2026 India"},
+            {"label": "RBI Rate Decision", "query": "RBI interest rate India 2025"},
+            {"label": "Nifty & Sensex", "query": "Nifty Sensex stock market India"},
+            {"label": "India GDP Growth", "query": "India GDP economic growth 2025"},
+            {"label": "Startup Funding", "query": "India startup funding investment 2025"},
+            {"label": "SEBI Regulations", "query": "SEBI regulations stock market India"},
+            {"label": "India Inflation", "query": "India inflation CPI WPI 2025"},
+            {"label": "PLI Scheme", "query": "PLI scheme manufacturing India 2025"},
+            {"label": "India Exports", "query": "India exports trade deficit 2025"},
+            {"label": "Adani Group", "query": "Adani Group business news India"},
+        ]
     }
 
 if __name__ == "__main__":
