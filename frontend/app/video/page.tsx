@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { ArrowLeft, Play, Loader2, CheckCircle, Video as VideoIcon, Search, X, Headphones, Volume2 } from 'lucide-react'
@@ -34,7 +34,7 @@ const AUDIO_PHASES = [
   { target: 92, label: 'Generating TTS audio…' },
 ]
 
-export default function VideoPage() {
+function VideoContent() {
   const searchParams = useSearchParams()
   const initialTopic = searchParams.get('topic') || 'bankruptcy'
 
@@ -449,5 +449,13 @@ export default function VideoPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function VideoPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">Loading...</div>}>
+      <VideoContent />
+    </Suspense>
   )
 }

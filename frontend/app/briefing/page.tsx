@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { ArrowLeft, Loader2, Send, ChevronDown, ChevronUp, FileText, MessageCircle, Search, X } from 'lucide-react'
@@ -20,7 +20,7 @@ const BRIEFING_TOPICS = [
   { label: 'Adani Group', query: 'Adani Group ports airports energy business 2025' },
 ]
 
-export default function BriefingPage() {
+function BriefingContent() {
   const searchParams = useSearchParams()
   const initialTopic = searchParams.get('topic') || 'union budget 2026'
 
@@ -302,5 +302,13 @@ export default function BriefingPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function BriefingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">Loading...</div>}>
+      <BriefingContent />
+    </Suspense>
   )
 }
